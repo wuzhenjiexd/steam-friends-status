@@ -13,10 +13,8 @@ if options.name == None and options.id == None:
 	parser.error("Please specify either the --name or --id to your profile")
 elif options.name:
 	url = 'http://www.steamcommunity.com/id/%s/friends' % (options.name)	
-	print "URL: %s" % (url)
 elif options.id:
 	url = 'http://www.steamcommunity.com/profiles/%s/friends' % (options.id)
-	print "URL: %s" % (url)
 else:
 	parser.error("Unable to set URL from --name or --id")
 
