@@ -38,6 +38,7 @@ i = 0
 for f_ingame in [i.text_content() for i in doc.find_class('linkFriend_in-game')]:
 		f_ingame = re.sub('\s-\sJoin', '', re.sub('In-Game', '', f_ingame))
 		if i < 1:
+			
 			print f_ingame
 			i += 1
 		else:
