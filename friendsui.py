@@ -44,12 +44,12 @@ class FetchFriends(QtGui.QMainWindow, Ui_SteamFriendsStatus):
 	for f_ingame in [i.text_content() for i in doc.find_class('linkFriend_in-game')]:
 			f_ingame = re.sub('\s-\sJoin', '', re.sub('In-Game', '', f_ingame))
 			if c == 1:	
-				line += "%s" % (f_ingame)
+				line += "%s\tIn-game" % (f_ingame)
 				self.ListSteamFriends.addItem(line)
 				c = 0
 				line = ''
 			else:
-				line += "%s\nIn-game " % (f_ingame)
+				line += "%s\n " % (f_ingame)
 				c += 1
 	for i in doc.find_class('linkFriend_online'):
 		line = "%s\n\t\tOnline" % (i.text_content())
