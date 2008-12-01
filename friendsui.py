@@ -28,6 +28,7 @@ class FetchFriends(QtGui.QMainWindow, Ui_SteamFriendsStatus):
 	content.addheaders = [('User-agent', 'Mozilla/5.0')]
 	try:
 		data = content.open(url).read()
+		content.close()
 	except urllib2.URLError, e:
 		print 'Failed to connect'
 		print 'Reason: ',e.reason
@@ -43,15 +44,15 @@ class FetchFriends(QtGui.QMainWindow, Ui_SteamFriendsStatus):
 	for f_ingame in [i.text_content() for i in doc.find_class('linkFriend_in-game')]:
 			f_ingame = re.sub('\s-\sJoin', '', re.sub('In-Game', '', f_ingame))
 			if c == 1:	
-				line += "\t%s" % (f_ingame)
+				line += "%s" % (f_ingame)
 				self.ListSteamFriends.addItem(line)
 				c = 0
 				line = ''
 			else:
-				line += "%s\n\tIn-game\n" % (f_ingame)
+				line += "%s\nIn-game " % (f_ingame)
 				c += 1
 	for i in doc.find_class('linkFriend_online'):
-		line = "%s\n\tOnline" % (i.text_content())
+		line = "%s\n\t\tOnline" % (i.text_content())
 		self.ListSteamFriends.addItem(line)
 
 
