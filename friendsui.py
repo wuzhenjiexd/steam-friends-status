@@ -4,7 +4,6 @@ from lxml.html import fromstring, tostring
 from PyQt4 import QtCore, QtGui
 from steamfriendsui import Ui_SteamFriendsStatus
 
-# Generate with pyuic4
 class FetchFriends(QtGui.QMainWindow, Ui_SteamFriendsStatus):
     def __init__(self):
         QtGui.QWidget.__init__(self)
@@ -12,7 +11,7 @@ class FetchFriends(QtGui.QMainWindow, Ui_SteamFriendsStatus):
         self.setupUi(self)
 	self.connect(self.FetchButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)
     def get_friend_status(self):
-	""" Populates the list and doodles on the list """
+	""" Populates the list """
 	steamid = self.SteamUsername.displayText()
 	steamid = str(steamid)
 	url = ''
@@ -44,15 +43,15 @@ class FetchFriends(QtGui.QMainWindow, Ui_SteamFriendsStatus):
 	for f_ingame in [i.text_content() for i in doc.find_class('linkFriend_in-game')]:
 			f_ingame = re.sub('\s-\sJoin', '', re.sub('In-Game', '', f_ingame))
 			if c == 1:	
-				line += " + (%s)" % (f_ingame)
+				line += "\t%s" % (f_ingame)
 				self.ListSteamFriends.addItem(line)
 				c = 0
 				line = ''
 			else:
-				line += "(In-game) %s" % (f_ingame)
+				line += "%s\n\tIn-game\n" % (f_ingame)
 				c += 1
 	for i in doc.find_class('linkFriend_online'):
-		line = "(Online) %s" % (i.text_content())
+		line = "%s\n\tOnline" % (i.text_content())
 		self.ListSteamFriends.addItem(line)
 
 

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'steamfriends.ui'
 #
-# Created: Sun Nov 30 09:12:49 2008
-#      by: PyQt4 UI code generator 4.4.3
+# Created: Mon Dec  1 00:30:10 2008
+#      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,17 +12,17 @@ from PyQt4 import QtCore, QtGui
 class Ui_SteamFriendsStatus(object):
     def setupUi(self, SteamFriendsStatus):
         SteamFriendsStatus.setObjectName("SteamFriendsStatus")
-        SteamFriendsStatus.resize(257, 412)
+        SteamFriendsStatus.resize(257, 400)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(SteamFriendsStatus.sizePolicy().hasHeightForWidth())
         SteamFriendsStatus.setSizePolicy(sizePolicy)
         self.QuitButton = QtGui.QPushButton(SteamFriendsStatus)
-        self.QuitButton.setGeometry(QtCore.QRect(100, 380, 71, 31))
+        self.QuitButton.setGeometry(QtCore.QRect(100, 370, 71, 31))
         self.QuitButton.setObjectName("QuitButton")
         self.FetchButton = QtGui.QPushButton(SteamFriendsStatus)
-        self.FetchButton.setGeometry(QtCore.QRect(100, 350, 71, 31))
+        self.FetchButton.setGeometry(QtCore.QRect(100, 340, 71, 31))
         self.FetchButton.setObjectName("FetchButton")
         self.SteamUsername = QtGui.QLineEdit(SteamFriendsStatus)
         self.SteamUsername.setGeometry(QtCore.QRect(1, 27, 256, 23))
@@ -52,7 +52,8 @@ class Ui_SteamFriendsStatus(object):
         self.ListSteamFriends.setAutoFillBackground(False)
         self.ListSteamFriends.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAsNeeded)
         self.ListSteamFriends.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.ListSteamFriends.setAlternatingRowColors(False)
+        self.ListSteamFriends.setAlternatingRowColors(True)
+        self.ListSteamFriends.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.ListSteamFriends.setMovement(QtGui.QListView.Static)
         self.ListSteamFriends.setProperty("isWrapping", QtCore.QVariant(False))
         self.ListSteamFriends.setResizeMode(QtGui.QListView.Fixed)
