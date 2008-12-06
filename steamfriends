@@ -2,9 +2,9 @@
 import urllib2, re, sys
 from lxml.html import fromstring, tostring
 from PyQt4 import QtCore, QtGui
-from steamfriendsui import Ui_SteamFriendsStatus
+from ui import steamfriendsui
 
-class FetchFriends(QtGui.QMainWindow, Ui_SteamFriendsStatus):
+class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
     def __init__(self):
         QtGui.QWidget.__init__(self)
 
@@ -29,12 +29,17 @@ class FetchFriends(QtGui.QMainWindow, Ui_SteamFriendsStatus):
 	try:
 		data = content.open(url).read()
 		content.close()
+	except ValueError, e:
+		print 'Unknown URL'
+		return 
 	except urllib2.URLError, e:
 		print 'Failed to connect'
 		print 'Reason: ',e.reason
+		return
 	except urllib2.HTTPError, e:
 		print 'Remote server error'
 		print 'Error code: ',e.code
+		return
 
 	doc = fromstring(data)
 	doc.make_links_absolute(url)
@@ -44,7 +49,7 @@ class FetchFriends(QtGui.QMainWindow, Ui_SteamFriendsStatus):
 	for f_ingame in [i.text_content() for i in doc.find_class('linkFriend_in-game')]:
 			f_ingame = re.sub('\s-\sJoin', '', re.sub('In-Game', '', f_ingame))
 			if c == 1:	
-				line += "%s\n\t\tIn-game" % (f_ingame)
+				line += "    %s\n\t\tIn-game" % (f_ingame)
 				self.ListSteamFriends.addItem(line)
 				c = 0
 				line = ''
