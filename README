@@ -5,12 +5,14 @@ System Requirements:
 Python is needed to run the basic command-line version: cli/steamfriends2.py
 PyQT4 is required for the GUI version of Steam Friends Status: steamfriends
 
+urllib2, and lxml.html are required for parsing.
+
 Running Steam Friends Status:
 To run the GUI version, execute steamfriends in the root of the git repository.
 To run the command-line version, execute steamfriends2.py under the cli/ folder.
 
 Steam Identity:
-Your steam identity is two things, both of which can be found in the steamcommunity.com URL.
+Your steam identity is two things, both of which can be found in the steamcommunity.com URL. Enter either the short name or ID number into what $n is (it is either a number, or a name).
 
 Short Name: http://www.steamcommunity.com/id/$n
 ID Number: http://www.steamcommunity.com/profiles/$n
