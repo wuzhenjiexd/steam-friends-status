@@ -33,7 +33,7 @@ doc = fromstring(data)
 doc.make_links_absolute(url)
 
 for i in doc.find_class('linkFriend_online'):
-	print "%s is [ONLINE]" % (i.text_content())
+	print "[ONLINE] %s" % (i.text_content())
 i = 0 
 for f_ingame in [i.text_content() for i in doc.find_class('linkFriend_in-game')]:
 		f_ingame = re.sub('\s-\sJoin', '', re.sub('In-Game', '', f_ingame))
@@ -42,5 +42,5 @@ for f_ingame in [i.text_content() for i in doc.find_class('linkFriend_in-game')]
 			print f_ingame
 			i += 1
 		else:
-			print "%s [IN-GAME]" % (f_ingame),
+			print "[IN-GAME] %s" % (f_ingame),
 			i = 0
