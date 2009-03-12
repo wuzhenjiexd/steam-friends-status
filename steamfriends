@@ -24,7 +24,7 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 			host, port = info.split(':')
 			hl = query.HLQuery(host,port)
 			server_info = hl.get_a2s_info()	
-
+			ServerInfo.serverInfoWidget.clear()
 			ServerInfo.serverInfoWidget.addItem("Server: %s" % (info))
 			ServerInfo.serverInfoWidget.addItem("Hostname: %s" % (server_info['hostname']))
 			ServerInfo.serverInfoWidget.addItem("Map: %s" % (server_info['map']))
@@ -39,7 +39,6 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 			ServerInfo.tableScores.setColumnCount(3)
 			row = 0
 			for player in players:
-				print player
 				ServerInfo.tableScores.setItem(row,0,QtGui.QTableWidgetItem("%s" % player['player']))
 				ServerInfo.tableScores.setItem(row,1,QtGui.QTableWidgetItem("%s" % player['score']))
 				ServerInfo.tableScores.setItem(row,2,QtGui.QTableWidgetItem("%s" % player['time']))
