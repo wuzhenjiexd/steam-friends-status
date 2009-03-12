@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'serverList.ui'
 #
-# Created: Thu Mar 12 05:16:15 2009
+# Created: Thu Mar 12 14:57:10 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,18 +12,14 @@ from PyQt4 import QtCore, QtGui
 class Ui_serverList(object):
     def setupUi(self, serverList):
         serverList.setObjectName("serverList")
-        serverList.resize(392, 376)
-        self.okButtonBox = QtGui.QDialogButtonBox(serverList)
-        self.okButtonBox.setGeometry(QtCore.QRect(30, 340, 351, 32))
-        self.okButtonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.okButtonBox.setStandardButtons(QtGui.QDialogButtonBox.Ok)
-        self.okButtonBox.setObjectName("okButtonBox")
+        serverList.resize(428, 466)
         self.serverInfoWidget = QtGui.QListWidget(serverList)
-        self.serverInfoWidget.setGeometry(QtCore.QRect(10, 10, 371, 151))
+        self.serverInfoWidget.setGeometry(QtCore.QRect(0, 10, 421, 231))
         self.serverInfoWidget.setObjectName("serverInfoWidget")
         self.tableScores = QtGui.QTableWidget(serverList)
-        self.tableScores.setGeometry(QtCore.QRect(10, 170, 371, 171))
-        self.tableScores.setAlternatingRowColors(True)
+        self.tableScores.setGeometry(QtCore.QRect(0, 250, 421, 171))
+        self.tableScores.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.tableScores.setAlternatingRowColors(False)
         self.tableScores.setRowCount(0)
         self.tableScores.setColumnCount(3)
         self.tableScores.setObjectName("tableScores")
@@ -35,14 +31,24 @@ class Ui_serverList(object):
         self.tableScores.setHorizontalHeaderItem(1, item)
         item = QtGui.QTableWidgetItem()
         self.tableScores.setHorizontalHeaderItem(2, item)
+        self.refreshButton = QtGui.QPushButton(serverList)
+        self.refreshButton.setGeometry(QtCore.QRect(240, 430, 80, 29))
+        self.refreshButton.setObjectName("refreshButton")
+        self.closeButton = QtGui.QPushButton(serverList)
+        self.closeButton.setGeometry(QtCore.QRect(330, 430, 80, 29))
+        self.closeButton.setObjectName("closeButton")
 
         self.retranslateUi(serverList)
-        QtCore.QObject.connect(self.okButtonBox, QtCore.SIGNAL("clicked(QAbstractButton*)"), serverList.close)
+        QtCore.QObject.connect(self.closeButton, QtCore.SIGNAL("clicked()"), serverList.close)
+        QtCore.QObject.connect(self.refreshButton, QtCore.SIGNAL("clicked()"), serverList.update)
         QtCore.QMetaObject.connectSlotsByName(serverList)
 
     def retranslateUi(self, serverList):
         serverList.setWindowTitle(QtGui.QApplication.translate("serverList", "Server Information", None, QtGui.QApplication.UnicodeUTF8))
+        self.tableScores.setSortingEnabled(True)
         self.tableScores.horizontalHeaderItem(0).setText(QtGui.QApplication.translate("serverList", "Player", None, QtGui.QApplication.UnicodeUTF8))
         self.tableScores.horizontalHeaderItem(1).setText(QtGui.QApplication.translate("serverList", "Score", None, QtGui.QApplication.UnicodeUTF8))
         self.tableScores.horizontalHeaderItem(2).setText(QtGui.QApplication.translate("serverList", "Time", None, QtGui.QApplication.UnicodeUTF8))
+        self.refreshButton.setText(QtGui.QApplication.translate("serverList", "Refresh", None, QtGui.QApplication.UnicodeUTF8))
+        self.closeButton.setText(QtGui.QApplication.translate("serverList", "Close", None, QtGui.QApplication.UnicodeUTF8))
 
