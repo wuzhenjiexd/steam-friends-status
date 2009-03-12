@@ -6,7 +6,7 @@
     <x>0</x>
     <y>0</y>
     <width>257</width>
-    <height>400</height>
+    <height>360</height>
    </rect>
   </property>
   <property name="sizePolicy" >
@@ -15,34 +15,21 @@
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
+  <property name="maximumSize" >
+   <size>
+    <width>257</width>
+    <height>360</height>
+   </size>
+  </property>
   <property name="windowTitle" >
    <string>Steam Friends Status</string>
   </property>
-  <widget class="QPushButton" name="QuitButton" >
-   <property name="geometry" >
-    <rect>
-     <x>100</x>
-     <y>370</y>
-     <width>71</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="toolTip" >
-    <string/>
-   </property>
-   <property name="whatsThis" >
-    <string/>
-   </property>
-   <property name="text" >
-    <string>Quit</string>
-   </property>
-  </widget>
   <widget class="QPushButton" name="FetchButton" >
    <property name="geometry" >
     <rect>
-     <x>100</x>
-     <y>340</y>
-     <width>71</width>
+     <x>20</x>
+     <y>330</y>
+     <width>211</width>
      <height>31</height>
     </rect>
    </property>
@@ -53,8 +40,8 @@
   <widget class="QLineEdit" name="SteamUsername" >
    <property name="geometry" >
     <rect>
-     <x>1</x>
-     <y>27</y>
+     <x>0</x>
+     <y>20</y>
      <width>256</width>
      <height>23</height>
     </rect>
@@ -75,16 +62,16 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>50</y>
-     <width>256</width>
-     <height>17</height>
+     <y>40</y>
+     <width>251</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="toolTip" >
     <string>Your online and in-game friends will appear below.</string>
    </property>
    <property name="text" >
-    <string>Your Friends</string>
+    <string>Friends</string>
    </property>
   </widget>
   <widget class="QLabel" name="LabelSteamID" >
@@ -102,14 +89,14 @@ Short name: http://steamcommunity.com/id/$Name
 ID number: http://steamcommunity.com/profiles/$Numbers</string>
    </property>
    <property name="text" >
-    <string>Steam Community Identity (ID/Alias)</string>
+    <string>Steam Community ID/Alias</string>
    </property>
   </widget>
   <widget class="QListWidget" name="ListSteamFriends" >
    <property name="geometry" >
     <rect>
      <x>0</x>
-     <y>70</y>
+     <y>60</y>
      <width>256</width>
      <height>271</height>
     </rect>
@@ -162,6 +149,9 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
    <property name="wordWrap" >
     <bool>true</bool>
    </property>
+   <property name="selectionRectVisible" >
+    <bool>false</bool>
+   </property>
    <item>
     <property name="text" >
      <string>Enter your Steam Community ID above and click fetch!</string>
@@ -178,25 +168,14 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
     <string>populateListSteamFriends</string>
    </property>
   </action>
+  <action name="actionGetServerData" >
+   <property name="text" >
+    <string>GetServerData</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections>
-  <connection>
-   <sender>QuitButton</sender>
-   <signal>clicked()</signal>
-   <receiver>SteamFriendsStatus</receiver>
-   <slot>close()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>329</x>
-     <y>263</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>188</x>
-     <y>15</y>
-    </hint>
-   </hints>
-  </connection>
   <connection>
    <sender>SteamUsername</sender>
    <signal>returnPressed()</signal>
@@ -210,6 +189,22 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
     <hint type="destinationlabel" >
      <x>311</x>
      <y>61</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>FetchButton</sender>
+   <signal>clicked()</signal>
+   <receiver>actionFetchData</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>329</x>
+     <y>53</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>-1</x>
+     <y>-1</y>
     </hint>
    </hints>
   </connection>
@@ -230,18 +225,18 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
    </hints>
   </connection>
   <connection>
-   <sender>FetchButton</sender>
-   <signal>clicked()</signal>
-   <receiver>actionFetchData</receiver>
+   <sender>ListSteamFriends</sender>
+   <signal>doubleClicked(QModelIndex)</signal>
+   <receiver>actionGetServerData</receiver>
    <slot>toggle()</slot>
    <hints>
     <hint type="sourcelabel" >
-     <x>329</x>
-     <y>53</y>
+     <x>127</x>
+     <y>195</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>-1</x>
-     <y>-1</y>
+     <x>125</x>
+     <y>345</y>
     </hint>
    </hints>
   </connection>

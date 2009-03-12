@@ -9,7 +9,10 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 		QtGui.QWidget.__init__(self)
 		self.setupUi(self)
 		self.connect(self.FetchButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)
-
+		self.connect(self.ListSteamFriends, QtCore.SIGNAL("doubleClicked(QModelIndex)"),self.get_server_data)
+	def get_server_data(self):
+		""" Get server information """
+		pass
 	def get_friend_status(self):
 		""" Populates the list, sends a request to Steam community
 			pages for friends list """
@@ -21,9 +24,7 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 		elif re.search(r'\w',steamid):
 			url = 'http://steamcommunity.com/id/%s/friends' % (steamid)
 		else: 
-			self.ListSteamFriends.addItem("Invalid Steam Identity -- The ID numbers or name can be found by browsing to your Steam Community page and looking in the URL.")
-			self.ListSteamFriends.addItem("Short name: steamcommunity.com/id/$n")
-			self.ListSteamFriends.addItem("ID number: steamcommunity.com/profiles/$n")	
+			QtGui.QMessageBox.information(self,"Could not launch space rodents! Please try again!","Our specially trained space rodents on rocket skates could not be launched to fetch your list of friends!\n\nPlease try again by using the following:\nShort alias: http://steamcommunity.com/id/$alias\nID: http://steamcommunity.com/id/$id\n\nPlease hurry! Once they're finished eating their fill of expensive space cheese they'll be plotting to take over the world!")
 		
 		content = urllib2.build_opener()
 		content.addheaders = [('User-agent', 'Mozilla/5.0')]
