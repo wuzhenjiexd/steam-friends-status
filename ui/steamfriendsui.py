@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'steamfriends.ui'
 #
-# Created: Wed Mar 11 23:15:19 2009
+# Created: Thu Mar 12 05:16:15 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!

@@ -1,0 +1,95 @@
+<ui version="4.0" >
+ <class>serverList</class>
+ <widget class="QDialog" name="serverList" >
+  <property name="geometry" >
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>392</width>
+    <height>376</height>
+   </rect>
+  </property>
+  <property name="windowTitle" >
+   <string>Server Information</string>
+  </property>
+  <widget class="QDialogButtonBox" name="okButtonBox" >
+   <property name="geometry" >
+    <rect>
+     <x>30</x>
+     <y>340</y>
+     <width>351</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="orientation" >
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons" >
+    <set>QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="serverInfoWidget" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>371</width>
+     <height>151</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTableWidget" name="tableScores" >
+   <property name="geometry" >
+    <rect>
+     <x>10</x>
+     <y>170</y>
+     <width>371</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="alternatingRowColors" >
+    <bool>true</bool>
+   </property>
+   <property name="rowCount" >
+    <number>0</number>
+   </property>
+   <property name="columnCount" >
+    <number>3</number>
+   </property>
+   <column>
+    <property name="text" >
+     <string>Player</string>
+    </property>
+   </column>
+   <column>
+    <property name="text" >
+     <string>Score</string>
+    </property>
+   </column>
+   <column>
+    <property name="text" >
+     <string>Time</string>
+    </property>
+   </column>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>okButtonBox</sender>
+   <signal>clicked(QAbstractButton*)</signal>
+   <receiver>serverList</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>205</x>
+     <y>355</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>195</x>
+     <y>187</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

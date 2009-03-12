@@ -2,17 +2,51 @@
 import urllib2, re, sys
 from lxml.html import fromstring, tostring
 from PyQt4 import QtCore, QtGui
-from ui import steamfriendsui
+from ui import steamfriendsui, serverList
+from steamquery import query
 
+class ServerInfo(QtGui.QMainWindow, serverList.Ui_serverList):
+	def __init__(self):
+		QtGui.QWidget.__init__(self)
+		self.setupUi(self)
+		
 class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 	def __init__(self):
 		QtGui.QWidget.__init__(self)
 		self.setupUi(self)
 		self.connect(self.FetchButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)
 		self.connect(self.ListSteamFriends, QtCore.SIGNAL("doubleClicked(QModelIndex)"),self.get_server_data)
-	def get_server_data(self):
+	def get_server_data(self,index):
 		""" Get server information """
-		pass
+		info = str(self.ListSteamFriends.model().data(index).toString())
+		info = re.sub(r'Server:\s','',info)
+		try:	
+			host, port = info.split(':')
+			hl = query.HLQuery(host,port)
+			server_info = hl.get_a2s_info()	
+
+			ServerInfo.serverInfoWidget.addItem("Server: %s" % (info))
+			ServerInfo.serverInfoWidget.addItem("Hostname: %s" % (server_info['hostname']))
+			ServerInfo.serverInfoWidget.addItem("Map: %s" % (server_info['map']))
+			ServerInfo.serverInfoWidget.addItem("Server Type: %s" % (server_info['dedicated']))
+			ServerInfo.serverInfoWidget.addItem("VAC: %s" % (server_info['secure']))
+			ServerInfo.serverInfoWidget.addItem("Players: %s / %s" % (server_info['players'],server_info['maxplayers']))
+			ServerInfo.serverInfoWidget.addItem("Game: %s" % (server_info['game']))
+			ServerInfo.serverInfoWidget.addItem("Passworded: %s" % (server_info['pass']))
+			ServerInfo.serverInfoWidget.addItem("OS: %s" % (server_info['os']))
+			players = hl.get_a2s_player()
+			ServerInfo.tableScores.setRowCount(len(players))
+			ServerInfo.tableScores.setColumnCount(3)
+			row = 0
+			for player in players:
+				print player
+				ServerInfo.tableScores.setItem(row,0,QtGui.QTableWidgetItem("%s" % player['player']))
+				ServerInfo.tableScores.setItem(row,1,QtGui.QTableWidgetItem("%s" % player['score']))
+				ServerInfo.tableScores.setItem(row,2,QtGui.QTableWidgetItem("%s" % player['time']))
+				row += 1
+			ServerInfo.show()	
+		except ValueError:
+			pass
 	def get_friend_status(self):
 		""" Populates the list, sends a request to Steam community
 			pages for friends list """
@@ -46,18 +80,33 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 		doc = fromstring(data)
 		doc.make_links_absolute(url)
 
-		c = 0
-		line = ''
-		for f_ingame in [i.text_content() for i in doc.find_class('linkFriend_in-game')]:
-				f_ingame = re.sub('\s-\sJoin', '', re.sub('In-Game', '', f_ingame))
-				if c == 1:	
-					line += "    %s\n\t\tIn-game" % (f_ingame)
-					self.ListSteamFriends.addItem(line)
-					c = 0
-					line = ''
-				else:
-					line += "%s\n" % (f_ingame)
-					c += 1
+		cre = re.compile(r'steam://connect/(.*)')
+		cre_game = re.compile(r'In-Game(.*)\s')
+		in_game_friends = []
+		f = {}
+		for i in doc.find_class('linkFriend_in-game'):
+			f_ingame = i.text_content()
+			game = cre_game.search(f_ingame)
+
+			for (element, attr, link, pos) in i.iterlinks():
+				s = cre.search(link)
+				if s:
+					f['server'] = s.group(1)
+			if 'server' not in f:
+				f['server'] = None
+			if game:
+				g = re.sub('\s-\sJoin', '', re.sub(r'\t\t', '', game.group(1)))
+				f['game'] = g
+			else:
+				f['friend'] = f_ingame
+			if 'server' in f and 'friend' in f and 'game' in f:
+				in_game_friends.append(f)
+				f = {}
+		for friend in in_game_friends:
+			item = "%s\nGame: %s" % (friend['friend'],friend['game'])
+			server = "Server: %s" % (friend['server'])
+			self.ListSteamFriends.addItem(item)
+			self.ListSteamFriends.addItem(server)
 		for i in doc.find_class('linkFriend_online'):
 			line = "%s\n\t\tOnline" % (i.text_content())
 			self.ListSteamFriends.addItem(line)
@@ -67,4 +116,5 @@ if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
     SteamFriends = FetchFriends()
     SteamFriends.show()
+    ServerInfo = ServerInfo()
     sys.exit(app.exec_())
