@@ -32,15 +32,35 @@ except HTTPError, e:
 doc = fromstring(data)
 doc.make_links_absolute(url)
 
+# Online friends
 for i in doc.find_class('linkFriend_online'):
 	print "[ONLINE] %s" % (i.text_content())
-i = 0 
-for f_ingame in [i.text_content() for i in doc.find_class('linkFriend_in-game')]:
-		f_ingame = re.sub('\s-\sJoin', '', re.sub('In-Game', '', f_ingame))
-		if i < 1:
-			
-			print f_ingame
-			i += 1
-		else:
-			print "[IN-GAME] %s" % (f_ingame),
-			i = 0
+
+# Handle in-game friends
+cre = re.compile(r'steam://connect/(.*)')
+cre_game = re.compile(r'In-Game(.*)\s')
+in_game_friends = []
+f = {}
+for i in doc.find_class('linkFriend_in-game'):
+	f_ingame = i.text_content()
+	game = cre_game.search(f_ingame)
+
+	for (element, attr, link, pos) in i.iterlinks():
+		s = cre.search(link)
+		if s:
+			f['server'] = s.group(1)
+	if 'server' not in f:
+		f['server'] = None
+	if game:
+		g = re.sub('\s-\sJoin', '', game.group(1))
+		f['game'] = g
+	else:
+		f['friend'] = f_ingame		
+	if 'server' in f and 'friend' in f and 'game' in f:
+		in_game_friends.append(f)
+		f = {}
+
+for friend in in_game_friends:
+	print "[IN-GAME]", friend['friend']
+	print "\tGame:", friend['game']
+	print "\tServer:", friend['server']
