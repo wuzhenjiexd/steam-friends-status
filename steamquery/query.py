@@ -57,7 +57,7 @@ class HLQuery:
                 addr = (self.host,self.port)    
 		try:
 			s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-			s.settimeout(10)
+			s.settimeout(4)
 			s.sendto(msg,addr)
  	                output = s.recv(buf)
 			s.close()
