@@ -31,19 +31,24 @@ Your steam identity is two things, both of which can be found in the steamcommun
 
 Short Name: http://www.steamcommunity.com/id/$n
 ID Number: http://www.steamcommunity.com/profiles/$n
-
-You can now provide the full Steam Community URL as well!
+Full URL: You can now provide the full Steam Community URL as well!
 Paste the address of the profile you want to show up in Steam Friends 
 Status into the Steam Identity box.
 
 Server information
 ~~~~~~~~~~~~~~~~~~
 
-Friends that are in-game and on a server accessable through the Internet
+Friends that are in-game and on a server accessible through the Internet
 can now have their server's statistics displayed through Steam Friends Status.
 
 Double-clicking on the Server: entry under the friend entry shows more 
 information.
+
+Limitations/Gotchas/Wishlist
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+A wiki entry with information on this topic is here:
+http://wiki.github.com/davidk/steam-friends-status/limitations
 
 License
 ~~~~~~~
