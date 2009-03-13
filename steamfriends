@@ -8,53 +8,64 @@ from steamquery import query
 class ServerInfo(QtGui.QMainWindow, serverList.Ui_serverList):
 	def __init__(self):
 		QtGui.QWidget.__init__(self)
+		self.info = ''
 		self.setupUi(self)
-		
-class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
-	def __init__(self):
-		QtGui.QWidget.__init__(self)
-		self.setupUi(self)
-		self.connect(self.FetchButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)
-		self.connect(self.ListSteamFriends, QtCore.SIGNAL("doubleClicked(QModelIndex)"),self.get_server_data)
-	def get_server_data(self,index):
-		""" Get server information """
-		info = str(self.ListSteamFriends.model().data(index).toString())
-		info = re.sub(r'Server:\s','',info)
-		try:	
-			host, port = info.split(':')
+		self.connect(self.refreshButton, QtCore.SIGNAL("clicked()"), self.get_server_data)
+
+	def get_server_data(self):
+		try:
+			host, port = self.info.split(':')
 			hl = query.HLQuery(host,port)
 			server_info = hl.get_a2s_info()	
-			ServerInfo.serverInfoWidget.clear()
-			ServerInfo.serverInfoWidget.addItem("Server: %s" % (info))
-			ServerInfo.serverInfoWidget.addItem("Hostname: %s" % (server_info['hostname']))
-			ServerInfo.serverInfoWidget.addItem("Map: %s" % (server_info['map']))
-			ServerInfo.serverInfoWidget.addItem("Server Type: %s" % (server_info['dedicated']))
-			ServerInfo.serverInfoWidget.addItem("VAC: %s" % (server_info['secure']))
-			ServerInfo.serverInfoWidget.addItem("Players: %s / %s" % (server_info['players'],server_info['maxplayers']))
-			ServerInfo.serverInfoWidget.addItem("Game: %s" % (server_info['game']))
-			ServerInfo.serverInfoWidget.addItem("Passworded: %s" % (server_info['pass']))
-			ServerInfo.serverInfoWidget.addItem("OS: %s" % (server_info['os']))
+			self.serverInfoWidget.clear()
+			self.serverInfoWidget.addItem("Server: %s" % (self.info))
+			self.serverInfoWidget.addItem("Hostname: %s" % (server_info['hostname']))
+			self.serverInfoWidget.addItem("Map: %s" % (server_info['map']))
+			self.serverInfoWidget.addItem("Server Type: %s" % (server_info['dedicated']))
+			self.serverInfoWidget.addItem("VAC: %s" % (server_info['secure']))
+			self.serverInfoWidget.addItem("Players: %s / %s" % (server_info['players'],server_info['maxplayers']))
+			self.serverInfoWidget.addItem("Game: %s" % (server_info['game']))
+			self.serverInfoWidget.addItem("Passworded: %s" % (server_info['pass']))
+			self.serverInfoWidget.addItem("OS: %s" % (server_info['os']))
 			players = hl.get_a2s_player()
-			ServerInfo.tableScores.clearContents()
-			ServerInfo.tableScores.setSortingEnabled(0)
-			ServerInfo.tableScores.setRowCount(len(players))
-			ServerInfo.tableScores.setColumnCount(3)
+			self.tableScores.clearContents()
+			self.tableScores.setSortingEnabled(0)
+			self.tableScores.setRowCount(len(players))
+			self.tableScores.setColumnCount(3)
 			row = 0
 			for p in hl.get_a2s_player():
 				player = "%s" % (str(p['player']))
 				score = "%d" % (int(p['score']))
 				time = "%f" % (float(p['time']))
-				ServerInfo.tableScores.setItem(row,0,QtGui.QTableWidgetItem(player))
-				ServerInfo.tableScores.setItem(row,1,QtGui.QTableWidgetItem(score))
-				ServerInfo.tableScores.setItem(row,2,QtGui.QTableWidgetItem(time))
+				self.tableScores.setItem(row,0,QtGui.QTableWidgetItem(player))
+				self.tableScores.setItem(row,1,QtGui.QTableWidgetItem(score))
+				self.tableScores.setItem(row,2,QtGui.QTableWidgetItem(time))
 				row += 1
 
-			ServerInfo.tableScores.setSortingEnabled(1)
-			ServerInfo.tableScores.horizontalHeader().setResizeMode(3)
-			ServerInfo.tableScores.horizontalHeader().setStretchLastSection(1)
-			ServerInfo.show()	
+			self.tableScores.setSortingEnabled(1)
+			self.tableScores.horizontalHeader().setResizeMode(3)
+			self.tableScores.horizontalHeader().setStretchLastSection(1)
+			self.show()
 		except ValueError:
 			pass
+		except AttributeError:
+			pass
+class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
+	def __init__(self,serverinfo):
+		QtGui.QWidget.__init__(self)
+		self.setupUi(self)
+		self.serverinfo = serverinfo
+		self.connect(self.FetchButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)
+		self.connect(self.GoButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)	
+		self.connect(self.ListSteamFriends, QtCore.SIGNAL("doubleClicked(QModelIndex)"),self.get_server_data)
+	def get_server_data(self,index):
+		""" Get server information """
+		info = str(self.ListSteamFriends.model().data(index).toString())
+		info = re.sub(r'Server:\s','',info)
+		self.serverinfo.info = info
+		self.serverinfo.get_server_data()
+		self.serverinfo.show()
+
 	def get_friend_status(self):
 		""" Populates the list, sends a request to Steam community
 			pages for friends list """
@@ -73,15 +84,15 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 
 			elif re.match(r'([a-zA-Z0-9])',steamid):
 					url = 'http://steamcommunity.com/id/%s/friends' % (steamid)
-		else: 
-			QtGui.QMessageBox.information(self,"Could not launch space rodents! Please try again!","Our specially trained space rodents on rocket skates could not be launched to fetch your list of friends!\n\nPlease try again by using the following:\nShort alias: http://steamcommunity.com/id/$alias\nID: http://steamcommunity.com/id/$id\n\nPlease hurry! Once they're finished eating their fill of expensive space cheese they'll be plotting to take over the world!")
+		else:
+			print "Whoops, didn't match anything"	
 		content = urllib2.build_opener()
 		content.addheaders = [('User-agent', 'Mozilla/5.0')]
 		try:
 			data = content.open(url).read()
 			content.close()
 		except ValueError, e:
-			print 'Unknown URL'
+			QtGui.QMessageBox.information(self,"Could not launch space rodents! Please try again!","Our specially trained space rodents on rocket skates could not be launched to fetch your list of friends!\n\nPlease try again by using the following:\nShort alias: http://steamcommunity.com/id/$alias\nID: http://steamcommunity.com/id/$id\nIf you really want to, you can also just cut and paste the full URLs as well.\n\nPlease hurry! Once they're finished eating their fill of expensive space cheese they'll be plotting to take over the world!")
 			return 
 		except urllib2.URLError, e:
 			print 'Failed to connect'
@@ -129,7 +140,6 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
-    SteamFriends = FetchFriends()
+    SteamFriends = FetchFriends(ServerInfo())
     SteamFriends.show()
-    ServerInfo = ServerInfo()
     sys.exit(app.exec_())

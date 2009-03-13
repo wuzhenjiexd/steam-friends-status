@@ -27,14 +27,14 @@
   <widget class="QPushButton" name="FetchButton" >
    <property name="geometry" >
     <rect>
-     <x>20</x>
+     <x>10</x>
      <y>330</y>
-     <width>211</width>
+     <width>231</width>
      <height>31</height>
     </rect>
    </property>
    <property name="text" >
-    <string>Fetch</string>
+    <string>Fetch/Update</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="SteamUsername" >
@@ -42,8 +42,8 @@
     <rect>
      <x>0</x>
      <y>20</y>
-     <width>256</width>
-     <height>23</height>
+     <width>201</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="sizePolicy" >
@@ -88,8 +88,14 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
 Short name: http://steamcommunity.com/id/$Name
 ID number: http://steamcommunity.com/profiles/$Numbers</string>
    </property>
+   <property name="frameShape" >
+    <enum>QFrame::NoFrame</enum>
+   </property>
+   <property name="frameShadow" >
+    <enum>QFrame::Plain</enum>
+   </property>
    <property name="text" >
-    <string>Steam Community ID/Alias</string>
+    <string>Steam Community ID/Alias/URL</string>
    </property>
   </widget>
   <widget class="QListWidget" name="ListSteamFriends" >
@@ -157,6 +163,19 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
      <string>Enter your Steam Community ID above and click fetch!</string>
     </property>
    </item>
+  </widget>
+  <widget class="QPushButton" name="GoButton" >
+   <property name="geometry" >
+    <rect>
+     <x>210</x>
+     <y>20</y>
+     <width>41</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text" >
+    <string>Go</string>
+   </property>
   </widget>
   <action name="actionFetchData" >
    <property name="text" >
@@ -235,8 +254,40 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
      <y>195</y>
     </hint>
     <hint type="destinationlabel" >
-     <x>125</x>
-     <y>345</y>
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>GoButton</sender>
+   <signal>clicked()</signal>
+   <receiver>actionFetchData</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>225</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>GoButton</sender>
+   <signal>clicked()</signal>
+   <receiver>ListSteamFriends</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel" >
+     <x>230</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel" >
+     <x>127</x>
+     <y>195</y>
     </hint>
    </hints>
   </connection>
