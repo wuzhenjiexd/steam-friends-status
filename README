@@ -1,24 +1,52 @@
 Steam Friends Status
---------------------
+~~~~~~~~~~~~~~~~~~~~
 
-System Requirements:
+Whats this good for? 
+~~~~~~~~~~~~~~~~~~~~
+
+You're on a OS that Steam doesn't officially support,
+or you don't want to/can't install Steam on the machine you're working on. 
+Steam Friends Status will let you know what your friends are up to without 
+having to keep a browser window open -- it'll also tell you server 
+information to let you know if there is space to join your friend.
+
+System Requirements
+~~~~~~~~~~~~~~~~~~~
+
 Python is needed to run the basic command-line version: cli/steamfriends2.py
 PyQT4 is required for the GUI version of Steam Friends Status: steamfriends
+lxml.html (http://codespeak.net/lxml/index.html#download) is required for 
+HTML parsing (applies to both the command-line version, and the PyQT4 version).
 
-urllib2, and lxml.html are required for parsing.
+Running Steam Friends Status
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Running Steam Friends Status:
-To run the GUI version, execute steamfriends in the root of the git repository.
+To run the GUI version, execute steamfriends in the root folder.
 To run the command-line version, execute steamfriends2.py under the cli/ folder.
 
-Steam Identity:
+Steam Identity
+~~~~~~~~~~~~~~
+
 Your steam identity is two things, both of which can be found in the steamcommunity.com URL. Enter either the short name or ID number into what $n is (it is either a number, or a name).
 
 Short Name: http://www.steamcommunity.com/id/$n
 ID Number: http://www.steamcommunity.com/profiles/$n
 
+You can now provide the full Steam Community URL as well!
+Paste the address of the profile you want to show up in Steam Friends 
+Status into the Steam Identity box.
+
+Server information
+~~~~~~~~~~~~~~~~~~
+
+Friends that are in-game and on a server accessable through the Internet
+can now have their server's statistics displayed through Steam Friends Status.
+
+Double-clicking on the Server: entry under the friend entry shows more 
+information.
+
 License
--------
+~~~~~~~
 MIT License
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
