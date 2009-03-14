@@ -11,7 +11,22 @@ class ServerInfo(QtGui.QMainWindow, serverList.Ui_serverList):
 		self.info = ''
 		self.setupUi(self)
 		self.connect(self.refreshButton, QtCore.SIGNAL("clicked()"), self.get_server_data)
-
+	def convert_time(self,seconds):
+		""" Convert data from HLQuery into more human parsable 
+		    values
+		"""
+		seconds = abs(int(seconds))
+		hour = abs(seconds/3600)
+		min = abs((seconds%3600) / 60)
+		seconds = (min % 60)
+		if hour < 10:
+			hour = "0"+str(hour)
+		if min < 10:
+			min = "0"+str(min)
+		if seconds < 10:
+			seconds = "0"+str(seconds)
+		
+		return "%s:%s:%s" % (hour,min,seconds)	
 	def get_server_data(self):
 		try:
 			host, port = self.info.split(':')
@@ -36,7 +51,7 @@ class ServerInfo(QtGui.QMainWindow, serverList.Ui_serverList):
 			for p in hl.get_a2s_player():
 				player = "%s" % (str(p['player']))
 				score = "%d" % (int(p['score']))
-				time = "%f" % (float(p['time']))
+				time = "%s" % (self.convert_time(p['time']))
 				self.tableScores.setItem(row,0,QtGui.QTableWidgetItem(player))
 				self.tableScores.setItem(row,1,QtGui.QTableWidgetItem(score))
 				self.tableScores.setItem(row,2,QtGui.QTableWidgetItem(time))
