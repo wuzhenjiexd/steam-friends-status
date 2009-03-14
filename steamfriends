@@ -144,12 +144,12 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 				in_game_friends.append(f)
 				f = {}
 		for friend in in_game_friends:
-			item = "%s\nGame: %s" % (friend['friend'],friend['game'])
+			item = "%s\n<In-Game>\n%s" % (friend['friend'],friend['game'])
 			server = "Server: %s" % (friend['server'])
 			self.ListSteamFriends.addItem(item)
 			self.ListSteamFriends.addItem(server)
 		for i in doc.find_class('linkFriend_online'):
-			line = "%s\n\t\tOnline" % (i.text_content())
+			line = "%s\n<Online>" % (i.text_content())
 			self.ListSteamFriends.addItem(line)
 
 
