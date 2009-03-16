@@ -167,7 +167,7 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 		for friend in in_game_friends:
 			item = "%s\n<In-Game>\n%s" % (friend['friend'],friend['game'])
 			if friend['server'] is not 'No server':
-				item += "\nServer information available"
+				item += "\nServer: "+friend['server']
 			else:
 				item += "\nNot in a server"
 			self.ListSteamFriends.addItem(item)
