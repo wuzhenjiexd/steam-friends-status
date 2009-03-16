@@ -11,6 +11,7 @@ class ServerInfo(QtGui.QMainWindow, serverList.Ui_serverList):
 		self.info = ''
 		self.setupUi(self)
 		self.connect(self.refreshButton, QtCore.SIGNAL("clicked()"), self.get_server_data)
+
 	def convert_time(self,seconds):
 		""" Convert data from HLQuery into more human parsable 
 		    values
@@ -29,7 +30,10 @@ class ServerInfo(QtGui.QMainWindow, serverList.Ui_serverList):
 		return "%s:%s:%s" % (hour,min,seconds)	
 	def get_server_data(self):
 		try:
-			host, port = self.info.split(':')
+			try:
+				host, port = self.info.split(':')
+			except ValueError: # Passed invalid server information
+				return None
 			hl = query.HLQuery(host,port)
 			server_info = hl.get_a2s_info()	
 			self.serverInfoWidget.clear()
@@ -50,9 +54,15 @@ class ServerInfo(QtGui.QMainWindow, serverList.Ui_serverList):
 			row = 0
 			for p in hl.get_a2s_player():
 				player = "%s" % (str(p['player']))
-				score = "%d" % (int(p['score']))
+				score = "%s" % (p['score'])
 				time = "%s" % (self.convert_time(p['time']))
+			
 				self.tableScores.setItem(row,0,QtGui.QTableWidgetItem(player))
+				"""
+				scoreitem = QtGui.QTableWidgetItem(score)
+				scoreitem.setTextAlignment(QtGui.AlignRight)
+				self.tableScores.setItem(row,1,scoreitem)
+				"""
 				self.tableScores.setItem(row,1,QtGui.QTableWidgetItem(score))
 				self.tableScores.setItem(row,2,QtGui.QTableWidgetItem(time))
 				row += 1
@@ -61,10 +71,9 @@ class ServerInfo(QtGui.QMainWindow, serverList.Ui_serverList):
 			self.tableScores.horizontalHeader().setResizeMode(3)
 			self.tableScores.horizontalHeader().setStretchLastSection(1)
 			self.show()
-		except ValueError:
-			pass
 		except AttributeError:
 			pass
+
 class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 	def __init__(self,serverinfo):
 		QtGui.QWidget.__init__(self)
@@ -73,13 +82,20 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 		self.connect(self.FetchButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)
 		self.connect(self.GoButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)	
 		self.connect(self.ListSteamFriends, QtCore.SIGNAL("doubleClicked(QModelIndex)"),self.get_server_data)
+
+		self.serverlist = {}
 	def get_server_data(self,index):
 		""" Get server information """
-		info = str(self.ListSteamFriends.model().data(index).toString())
-		info = re.sub(r'Server:\s','',info)
-		self.serverinfo.info = info
-		self.serverinfo.get_server_data()
-		self.serverinfo.show()
+		info = ''
+		# Pass serverlist here, and from the index, find the server
+		try:
+			info = self.serverlist[self.ListSteamFriends.indexFromItem(self.ListSteamFriends.currentItem()).row()]
+			self.serverinfo.info = info
+		except KeyError: # Bypass friends that are online, but not on a server
+			pass	
+		# Do not display if get_server_data couldn't parse
+		if self.serverinfo.get_server_data() is not None:
+			self.serverinfo.show()
 
 	def get_friend_status(self):
 		""" Populates the list, sends a request to Steam community
@@ -123,8 +139,12 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 
 		cre = re.compile(r'steam://connect/(.*)')
 		cre_game = re.compile(r'In-Game(.*)\s')
+
 		in_game_friends = []
 		f = {}
+		self.serverlist = {}
+
+		# Parse in game friends and their information 
 		for i in doc.find_class('linkFriend_in-game'):
 			f_ingame = i.text_content()
 			game = cre_game.search(f_ingame)
@@ -134,7 +154,7 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 				if s:
 					f['server'] = s.group(1)
 			if 'server' not in f:
-				f['server'] = None
+				f['server'] = 'No server'
 			if game:
 				g = re.sub('\s-\sJoin', '', re.sub(r'\t\t', '', game.group(1)))
 				f['game'] = g
@@ -143,15 +163,21 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 			if 'server' in f and 'friend' in f and 'game' in f:
 				in_game_friends.append(f)
 				f = {}
+		# In game friends
 		for friend in in_game_friends:
 			item = "%s\n<In-Game>\n%s" % (friend['friend'],friend['game'])
-			server = "Server: %s" % (friend['server'])
+			if friend['server'] is not 'No server':
+				item += "\nServer information available"
+			else:
+				item += "\nNot in a server"
 			self.ListSteamFriends.addItem(item)
-			self.ListSteamFriends.addItem(server)
+			
+			# Add a key/value pair for reference later
+			self.serverlist[self.ListSteamFriends.count() - 1] = friend['server']
+		# Online friends	
 		for i in doc.find_class('linkFriend_online'):
 			line = "%s\n<Online>" % (i.text_content())
 			self.ListSteamFriends.addItem(line)
-
 
 if __name__ == "__main__":
     app = QtGui.QApplication(sys.argv)
