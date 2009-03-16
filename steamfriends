@@ -52,25 +52,21 @@ class ServerInfo(QtGui.QMainWindow, serverList.Ui_serverList):
 			self.tableScores.setRowCount(len(players))
 			self.tableScores.setColumnCount(3)
 			row = 0
-			for p in hl.get_a2s_player():
-				player = "%s" % (str(p['player']))
-				score = "%s" % (p['score'])
-				time = "%s" % (self.convert_time(p['time']))
-			
-				self.tableScores.setItem(row,0,QtGui.QTableWidgetItem(player))
-				"""
-				scoreitem = QtGui.QTableWidgetItem(score)
-				scoreitem.setTextAlignment(QtGui.AlignRight)
-				self.tableScores.setItem(row,1,scoreitem)
-				"""
-				self.tableScores.setItem(row,1,QtGui.QTableWidgetItem(score))
-				self.tableScores.setItem(row,2,QtGui.QTableWidgetItem(time))
-				row += 1
 
-			self.tableScores.setSortingEnabled(1)
-			self.tableScores.horizontalHeader().setResizeMode(3)
-			self.tableScores.horizontalHeader().setStretchLastSection(1)
-			self.show()
+                        for p in hl.get_a2s_player():
+                                player = "%s" % (str(p['player']))
+                                time = "%s" % (self.convert_time(p['time']))
+                                self.tableScores.setItem(row,0,QtGui.QTableWidgetItem(player))
+                                score = QtGui.QTableWidgetItem(u'%15d' % (int(p['score'])))
+                                score.setTextAlignment(2)
+                                self.tableScores.setItem(row,1,score)
+                                self.tableScores.setItem(row,2,QtGui.QTableWidgetItem(time))
+                                row += 1
+
+                        self.tableScores.setSortingEnabled(1)
+                        self.tableScores.horizontalHeader().setResizeMode(3)
+                        self.tableScores.horizontalHeader().setStretchLastSection(1)
+                        self.show()
 		except AttributeError:
 			pass
 
