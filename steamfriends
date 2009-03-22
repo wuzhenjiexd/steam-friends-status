@@ -4,7 +4,6 @@ from lxml.html import fromstring, tostring
 from PyQt4 import QtCore, QtGui
 from ui import steamfriendsui, serverList
 from steamquery import query
-import threading
 
 NOT_ON_SERVER = r'Not on a server'
 
@@ -74,14 +73,6 @@ class ServerInfo(QtGui.QDialog, serverList.Ui_serverList):
 		except AttributeError:
 			pass
 
-class FriendsWorker(QtCore.QThread):
-	def __init__(self, parent=None):
-		QThread.__init__(self,parent)
-	def __del__(self):
-		self.wait()
-	def run(self):
-		pass		
-
 class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 	def __init__(self):
 		QtGui.QWidget.__init__(self)
@@ -101,10 +92,10 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 			self.serverinfo.info = info
 		except KeyError: # Bypass friends that are online, but not on a server
 			pass
-
+		
 		# Catch friends online, but not on a server. This prints a meaningful message about 
 		# the exception to the user, (before nothing happened at all).
-		if NOT_ON_SERVER in self.serverinfo.info:
+		if NOT_ON_SERVER in self.serverinfo.info or not info:
 			QtGui.QMessageBox.information(self,"Confused rocket skating rodent says:","No server information is available for this friend")
 			return None
 
