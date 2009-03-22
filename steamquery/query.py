@@ -1,5 +1,6 @@
 #!/usr/bin/python
 """ 	Query script for HLDS Source servers 
+	http://github.com/davidk/hlquery
         WTFPL license 
 	Sample output:
 	% ./query.py XXX.XXX.XXX.XXX:27015
@@ -47,6 +48,8 @@ class HLQuery:
         def __init__(self,host,port):
                 self.host = host
                 self.port = int(port)
+		self.a2s_player_challenge = "\xFF\xFF\xFF\xFF\x55\xFF\xFF\xFF\xFF"
+		self.a2s_info = "\xFF\xFF\xFF\xFF\x54\x53\x6F\x75\x72\x63\x65\x20\x45\x6E\x67\x69\x6E\x65\x20\x51\x75\x65\x72\x79\x00"
 
         def get(self,msg):
 		""" Send a message to the server. This needs to use 
@@ -73,7 +76,7 @@ class HLQuery:
 			ship off the resulting response to be parsed 
 		"""
 		# Initiate challenge request
-		reply = self.get(self._a2s_player_challenge())
+		reply = self.get(self.a2s_player_challenge)
 
 		# Send challenge back out to server
 		players = self.get(self._a2s_player_query(reply))
@@ -87,9 +90,9 @@ class HLQuery:
 		"""
 		players = []
 		recv = recv[+5:] # Punch out header
-		count = int(ord(recv[0]))
+		count = int(ord(recv[0]))+1
 		recv = recv[+1:]
-		for player in range(count):
+		for player in range(1,count):
 			try:
 				p = {}
 				#print unpack("%ds" % len(recv), recv)
@@ -113,25 +116,16 @@ class HLQuery:
 		"""
 		return "\xFF\xFF\xFF\xFF\x55"+challenge[5:]
 	
-	def _a2s_player_challenge(self):
-		""" a2s_player challenge 
-			Set to -1 so we can initiate the challenge
-			to the server	
-		"""
-		return "\xFF\xFF\xFF\xFF\x55\xFF\xFF\xFF\xFF"
-
         def get_a2s_info(self):
 		""" Send and parse a2s_info 
+
 		"""
-                reply = self.get(self._a2s_info())
+                reply = self.get(self.a2s_info)
                 return self._parse_a2s_info_reply(reply) 
 
-        def _a2s_info(self):
-		""" a2s_info request payload 
-		"""
-                return "\xFF\xFF\xFF\xFF\x54\x53\x6F\x75\x72\x63\x65\x20\x45\x6E\x67\x69\x6E\x65\x20\x51\x75\x65\x72\x79\x00"   
         def _parse_a2s_info_reply(self,recv):
 		""" Parse the reply packet from an a2s_info request 
+
 		"""
 		str = '\xff\xff\xff\xff\x49(.?)(?P<hostname>.*?)\x00(?P<map>.*?)\x00(?P<folder>.*?)\x00(?P<game>.*?)\x00(.)(.)(?P<players>.)(?P<maxplayers>.)(.)(?P<dedicated>.)(?P<os>.)(?P<pass>.)(?P<secure>.).'
 		cre = re.compile(str,re.DOTALL)
@@ -145,6 +139,7 @@ class HLQuery:
 			print "Dumping hex representation of reply packet .."
 			print unpack("%ds" % len(recv),recv)
 			return None
+
 	def _translate_a2s_info(self,result):
 		""" Changes information returned by _parse_a2s_info_reply into 
 		    a more readable format 
@@ -178,4 +173,5 @@ if __name__ == "__main__":
 	print "secure :",s['secure'] 
 	print "*"*20
 	for player in players:
-		print "Player [%s]: %s\tScore: %s\tTime: %s" % (player['num'],player['player'],player['score'],player['time'])
+		print "Player: %s\tScore: %s\tTime: %s" % (player['player'],player['score'],player['time'])
+	print "Total players in list: ", len(players)
