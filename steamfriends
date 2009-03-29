@@ -3,7 +3,7 @@ import urllib2, re, sys
 from lxml.html import fromstring, tostring
 from PyQt4 import QtCore, QtGui
 from ui import steamfriendsui, serverList
-from steamquery import query
+from hlquery import query
 
 NOT_ON_SERVER = r'Not on a server'
 
