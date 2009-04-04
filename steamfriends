@@ -4,6 +4,7 @@ from lxml.html import fromstring, tostring
 from PyQt4 import QtCore, QtGui
 from ui import steamfriendsui, serverList
 from hlquery import query
+from steamquery import steam
 
 NOT_ON_SERVER = r'Not on a server'
 
@@ -78,8 +79,8 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 		QtGui.QWidget.__init__(self)
 		self.setupUi(self)
 		self.serverinfo = ServerInfo(self)
-		self.connect(self.FetchButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)
-		self.connect(self.GoButton, QtCore.SIGNAL("clicked()"), self.get_friend_status)	
+		self.connect(self.FetchButton, QtCore.SIGNAL("clicked()"), self.populate_friends_list)
+		self.connect(self.GoButton, QtCore.SIGNAL("clicked()"), self.populate_friends_list)	
 		self.connect(self.ListSteamFriends, QtCore.SIGNAL("doubleClicked(QModelIndex)"),self.get_server_data)
 
 		self.serverlist = {}
@@ -103,86 +104,25 @@ class FetchFriends(QtGui.QMainWindow, steamfriendsui.Ui_SteamFriendsStatus):
 		if self.serverinfo.get_server_data() is not None:
 			self.serverinfo.show()
 
-	def get_friend_status(self):
+	def populate_friends_list(self):
 		""" Populates the list, sends a request to Steam community
 			pages for friends list """
 		steamid = self.SteamUsername.displayText()
 		steamid = str(steamid)
-		url = ''
-		if re.match(r'http://.*steamcommunity.com/id/.*',steamid):
-			url = steamid	
-			print url
-		elif re.match(r'http://.*steamcommunity.com/profiles/.*',steamid):
-			url = steamid		
-			print url
-		elif url == '':
-			if re.match(r'\d',steamid):
-					url = 'http://steamcommunity.com/profiles/%s/friends' % (steamid)
-
-			elif re.match(r'([a-zA-Z0-9])',steamid):
-					url = 'http://steamcommunity.com/id/%s/friends' % (steamid)
-		else:
-			print "Whoops, didn't match anything"	
-		content = urllib2.build_opener()
-		content.addheaders = [('User-agent', 'Mozilla/5.0')]
-		try:
-			data = content.open(url).read()
-			content.close()
-		except ValueError, e:
-			QtGui.QMessageBox.information(self,"Could not launch space rodents! Please try again!","Our specially trained space rodents on rocket skates could not be launched to fetch your list of friends!\n\nPlease try again by using the following:\nShort alias: http://steamcommunity.com/id/$alias\nID: http://steamcommunity.com/id/$id\nIf you really want to, you can also just cut and paste the full URLs as well.\n\nPlease hurry! Once they're finished eating their fill of expensive space cheese they'll be plotting to take over the world!")
-			return 
-		except urllib2.URLError, e:
-			print 'Failed to connect'
-			print 'Reason: ',e.reason
-			return
-		except urllib2.HTTPError, e:
-			print 'Remote server error'
-			print 'Error code: ',e.code
-			return
-
-		doc = fromstring(data)
-		doc.make_links_absolute(url)
-
-		cre = re.compile(r'steam://connect/(.*)')
-		cre_game = re.compile(r'In-Game(.*)\s')
-
-		in_game_friends = []
-		f = {}
-		self.serverlist = {}
-
-		# Parse in game friends and their information 
-		for i in doc.find_class('linkFriend_in-game'):
-			f_ingame = i.text_content()
-			game = cre_game.search(f_ingame)
-
-			for (element, attr, link, pos) in i.iterlinks():
-				s = cre.search(link)
-				if s:
-					f['server'] = s.group(1)
-			if 'server' not in f:
-				f['server'] = NOT_ON_SERVER
-			if game:
-				g = re.sub('\s-\sJoin', '', re.sub(r'\t\t', '', game.group(1)))
-				f['game'] = g
-			else:
-				f['friend'] = f_ingame
-			if 'server' in f and 'friend' in f and 'game' in f:
-				in_game_friends.append(f)
-				f = {}
+		s = steam.SteamQuery(steamid)	
+		(in_game_friends,online_friends) = s.get_friend_status()
 		# In game friends
-		for friend in in_game_friends:
-			item = "%s\nIn-Game\n%s" % (friend['friend'],friend['game'])
-			if friend['server'] is not 'No server':
-				item += "\nServer: "+friend['server']
-			else:
-				item += "\n"+NOT_ON_SERVER
-			self.ListSteamFriends.addItem(item)
-			
-			# Add a key/value pair for reference later
-			self.serverlist[self.ListSteamFriends.count() - 1] = friend['server']
-		# Online friends	
-		for i in doc.find_class('linkFriend_online'):
-			line = "%s\nOnline" % (i.text_content())
+                for friend in in_game_friends:
+                        item = "%s\nIn-Game\n%s" % (friend['friend'],friend['game'])
+                        if friend['server'] is not 'No server':
+                                item += "\nServer: "+friend['server']
+                        else:
+                                item += "\n"+NOT_ON_SERVER
+                        self.ListSteamFriends.addItem(item)
+                        self.serverlist[self.ListSteamFriends.count() - 1] = friend['server']
+		# On-line friends	
+		for online_friend in online_friends:
+			line = "%s\nOnline" % (online_friend)
 			self.ListSteamFriends.addItem(line)
 
 if __name__ == "__main__":
