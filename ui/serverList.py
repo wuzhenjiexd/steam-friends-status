@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'serverList.ui'
 #
-# Created: Fri Mar 13 12:47:10 2009
+# Created: Sat Apr 25 02:08:36 2009
 #      by: PyQt4 UI code generator 4.4.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,14 +12,14 @@ from PyQt4 import QtCore, QtGui
 class Ui_serverList(object):
     def setupUi(self, serverList):
         serverList.setObjectName("serverList")
-        serverList.resize(428, 466)
+        serverList.resize(428, 470)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(serverList.sizePolicy().hasHeightForWidth())
         serverList.setSizePolicy(sizePolicy)
         serverList.setMinimumSize(QtCore.QSize(428, 466))
-        serverList.setMaximumSize(QtCore.QSize(428, 466))
+        serverList.setMaximumSize(QtCore.QSize(428, 470))
         self.serverInfoWidget = QtGui.QListWidget(serverList)
         self.serverInfoWidget.setGeometry(QtCore.QRect(0, 10, 421, 191))
         self.serverInfoWidget.setMaximumSize(QtCore.QSize(421, 191))
@@ -53,10 +53,10 @@ class Ui_serverList(object):
         item = QtGui.QTableWidgetItem()
         self.tableScores.setHorizontalHeaderItem(2, item)
         self.closeButton = QtGui.QPushButton(serverList)
-        self.closeButton.setGeometry(QtCore.QRect(310, 430, 111, 29))
+        self.closeButton.setGeometry(QtCore.QRect(300, 440, 121, 29))
         self.closeButton.setObjectName("closeButton")
         self.refreshButton = QtGui.QPushButton(serverList)
-        self.refreshButton.setGeometry(QtCore.QRect(110, 430, 191, 29))
+        self.refreshButton.setGeometry(QtCore.QRect(10, 440, 281, 29))
         self.refreshButton.setObjectName("refreshButton")
 
         self.retranslateUi(serverList)

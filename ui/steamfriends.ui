@@ -1,7 +1,8 @@
-<ui version="4.0" >
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
  <class>SteamFriendsStatus</class>
- <widget class="QDialog" name="SteamFriendsStatus" >
-  <property name="geometry" >
+ <widget class="QDialog" name="SteamFriendsStatus">
+  <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
@@ -9,163 +10,139 @@
     <height>360</height>
    </rect>
   </property>
-  <property name="sizePolicy" >
-   <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
-  <property name="maximumSize" >
+  <property name="maximumSize">
    <size>
     <width>257</width>
     <height>360</height>
    </size>
   </property>
-  <property name="windowTitle" >
+  <property name="windowTitle">
    <string>Steam Friends Status</string>
   </property>
-  <widget class="QPushButton" name="FetchButton" >
-   <property name="geometry" >
+  <widget class="QLineEdit" name="SteamUsername">
+   <property name="geometry">
     <rect>
      <x>10</x>
-     <y>330</y>
-     <width>231</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <property name="text" >
-    <string>Fetch/Update</string>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="SteamUsername" >
-   <property name="geometry" >
-    <rect>
-     <x>0</x>
      <y>20</y>
-     <width>201</width>
+     <width>191</width>
      <height>21</height>
     </rect>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Fixed" hsizetype="Preferred" >
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="toolTip" >
-    <string>The ID numbers or name can be found by browsing to your Steam Community page and looking in the URL.
-Short name: http://steamcommunity.com/id/$Name
-ID number: http://steamcommunity.com/profiles/$Numbers</string>
+   <property name="toolTip">
+    <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'DejaVu Sans'; font-size:10pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;You can provide one of the following:&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The &lt;span style=&quot; font-weight:600;&quot;&gt;entire URL&lt;/span&gt; to your Steam Community page: &lt;span style=&quot; font-weight:600;&quot;&gt;http://steamcommunity.com/id/example&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The &lt;span style=&quot; font-weight:600;&quot;&gt;profile ID&lt;/span&gt; from the URL: http://steamcommunity.com/profiles/&lt;span style=&quot; font-weight:600;&quot;&gt;(profile ID)&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;The &lt;span style=&quot; font-weight:600;&quot;&gt;c&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;ustom UR&lt;/span&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;L&lt;/span&gt;: http://steamcommunity.com/id/&lt;span style=&quot; font-weight:600;&quot;&gt;(custom URL)&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label" >
-   <property name="geometry" >
+  <widget class="QLabel" name="LabelSteamID">
+   <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>40</y>
-     <width>251</width>
+     <x>10</x>
+     <y>0</y>
+     <width>241</width>
      <height>20</height>
     </rect>
    </property>
-   <property name="toolTip" >
-    <string>Your online and in-game friends will appear below.</string>
-   </property>
-   <property name="text" >
-    <string>Friends</string>
-   </property>
-  </widget>
-  <widget class="QLabel" name="LabelSteamID" >
-   <property name="geometry" >
-    <rect>
-     <x>1</x>
-     <y>1</y>
-     <width>321</width>
-     <height>17</height>
-    </rect>
-   </property>
-   <property name="toolTip" >
+   <property name="toolTip">
     <string>The ID numbers or name can be found by browsing to your Steam Community page and looking in the URL.
 Short name: http://steamcommunity.com/id/$Name
 ID number: http://steamcommunity.com/profiles/$Numbers</string>
    </property>
-   <property name="frameShape" >
+   <property name="frameShape">
     <enum>QFrame::NoFrame</enum>
    </property>
-   <property name="frameShadow" >
+   <property name="frameShadow">
     <enum>QFrame::Plain</enum>
    </property>
-   <property name="text" >
-    <string>Steam Community ID/Alias/URL</string>
+   <property name="text">
+    <string>Steam Community ID / Custom URL:</string>
    </property>
   </widget>
-  <widget class="QListWidget" name="ListSteamFriends" >
-   <property name="geometry" >
+  <widget class="QListWidget" name="ListSteamFriends">
+   <property name="geometry">
     <rect>
      <x>0</x>
-     <y>60</y>
+     <y>50</y>
      <width>256</width>
-     <height>271</height>
+     <height>311</height>
     </rect>
    </property>
-   <property name="sizePolicy" >
-    <sizepolicy vsizetype="Fixed" hsizetype="Fixed" >
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <property name="font" >
+   <property name="font">
     <font>
      <italic>false</italic>
      <underline>false</underline>
     </font>
    </property>
-   <property name="whatsThis" >
+   <property name="whatsThis">
     <string/>
    </property>
-   <property name="autoFillBackground" >
+   <property name="autoFillBackground">
     <bool>false</bool>
    </property>
-   <property name="verticalScrollBarPolicy" >
+   <property name="verticalScrollBarPolicy">
     <enum>Qt::ScrollBarAsNeeded</enum>
    </property>
-   <property name="horizontalScrollBarPolicy" >
+   <property name="horizontalScrollBarPolicy">
     <enum>Qt::ScrollBarAlwaysOff</enum>
    </property>
-   <property name="alternatingRowColors" >
+   <property name="alternatingRowColors">
     <bool>true</bool>
    </property>
-   <property name="selectionBehavior" >
+   <property name="selectionBehavior">
     <enum>QAbstractItemView::SelectRows</enum>
    </property>
-   <property name="movement" >
+   <property name="movement">
     <enum>QListView::Static</enum>
    </property>
-   <property name="isWrapping" stdset="0" >
+   <property name="isWrapping" stdset="0">
     <bool>false</bool>
    </property>
-   <property name="resizeMode" >
+   <property name="resizeMode">
     <enum>QListView::Fixed</enum>
    </property>
-   <property name="viewMode" >
+   <property name="viewMode">
     <enum>QListView::ListMode</enum>
    </property>
-   <property name="uniformItemSizes" >
+   <property name="uniformItemSizes">
     <bool>false</bool>
    </property>
-   <property name="wordWrap" >
+   <property name="wordWrap">
     <bool>true</bool>
    </property>
-   <property name="selectionRectVisible" >
+   <property name="selectionRectVisible">
     <bool>false</bool>
    </property>
    <item>
-    <property name="text" >
-     <string>Enter your Steam Community ID above and click fetch!</string>
+    <property name="text">
+     <string>Enter your Steam Community information above and click Go. Mouse over the box above for more information.</string>
     </property>
    </item>
   </widget>
-  <widget class="QPushButton" name="GoButton" >
-   <property name="geometry" >
+  <widget class="QPushButton" name="GoButton">
+   <property name="geometry">
     <rect>
      <x>210</x>
      <y>20</y>
@@ -173,22 +150,22 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
      <height>21</height>
     </rect>
    </property>
-   <property name="text" >
+   <property name="text">
     <string>Go</string>
    </property>
   </widget>
-  <action name="actionFetchData" >
-   <property name="text" >
+  <action name="actionFetchData">
+   <property name="text">
     <string>FetchData</string>
    </property>
   </action>
-  <action name="actionPopulateListSteamFriends" >
-   <property name="text" >
+  <action name="actionPopulateListSteamFriends">
+   <property name="text">
     <string>populateListSteamFriends</string>
    </property>
   </action>
-  <action name="actionGetServerData" >
-   <property name="text" >
+  <action name="actionGetServerData">
+   <property name="text">
     <string>GetServerData</string>
    </property>
   </action>
@@ -196,64 +173,16 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
  <resources/>
  <connections>
   <connection>
-   <sender>SteamUsername</sender>
-   <signal>returnPressed()</signal>
-   <receiver>FetchButton</receiver>
-   <slot>click()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>220</x>
-     <y>39</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>311</x>
-     <y>61</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>FetchButton</sender>
-   <signal>clicked()</signal>
-   <receiver>actionFetchData</receiver>
-   <slot>toggle()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>329</x>
-     <y>53</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>-1</x>
-     <y>-1</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>FetchButton</sender>
-   <signal>clicked()</signal>
-   <receiver>ListSteamFriends</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel" >
-     <x>342</x>
-     <y>55</y>
-    </hint>
-    <hint type="destinationlabel" >
-     <x>244</x>
-     <y>114</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>ListSteamFriends</sender>
    <signal>doubleClicked(QModelIndex)</signal>
    <receiver>actionGetServerData</receiver>
    <slot>toggle()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>127</x>
      <y>195</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
@@ -265,11 +194,11 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
    <receiver>actionFetchData</receiver>
    <slot>toggle()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>225</x>
      <y>30</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>-1</x>
      <y>-1</y>
     </hint>
@@ -281,13 +210,45 @@ ID number: http://steamcommunity.com/profiles/$Numbers</string>
    <receiver>ListSteamFriends</receiver>
    <slot>clear()</slot>
    <hints>
-    <hint type="sourcelabel" >
+    <hint type="sourcelabel">
      <x>230</x>
      <y>30</y>
     </hint>
-    <hint type="destinationlabel" >
+    <hint type="destinationlabel">
      <x>127</x>
      <y>195</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>SteamUsername</sender>
+   <signal>returnPressed()</signal>
+   <receiver>actionFetchData</receiver>
+   <slot>toggle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>205</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>SteamUsername</sender>
+   <signal>returnPressed()</signal>
+   <receiver>ListSteamFriends</receiver>
+   <slot>clear()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>105</x>
+     <y>30</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>205</y>
     </hint>
    </hints>
   </connection>
